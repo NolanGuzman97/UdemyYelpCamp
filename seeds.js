@@ -44,7 +44,7 @@ async function seedDB(){
         campground.comments.push(comment);
         campground.save();
         console.log("Comment Successfully added to Campground")
-    }
+    } 
 }
  
 module.exports = seedDB;
