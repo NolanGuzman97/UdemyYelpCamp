@@ -1,6 +1,7 @@
 body {
-    background: #b3ffd9;
+    background: #b3e6ff;
 }
+
 .thumbnail img{
     width: 100%;
 }
@@ -15,4 +16,7 @@ body {
 
 .delete-form {
     display: inline;
+}
+#register, #login {
+    text-align: center;
 }

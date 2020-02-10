@@ -4,24 +4,28 @@ let express = require('express'),
     passport = require("passport"), 
     LocalStrategy = require("passport-local"),
     bodyParser = require('body-parser'),
-    methodOverride = require('method-override')
+    methodOverride = require('method-override'),
     Campground = require('./models/campground'),
     User = require("./models/user"),
     data_populate = require('./seeds'),
     Comment = require("./models/comment"),
-    commentRoutes = require("./routes/comments")
-    campgroundRoutes = require("./routes/campgrounds")
-    authRoutes = require("./routes/index");
+    commentRoutes = require("./routes/comments"),
+    campgroundRoutes = require("./routes/campgrounds"),
+    authRoutes = require("./routes/index"),
+    flash = require("connect-flash");
 
 mongoose.set('useNewUrlParser', true);
 mongoose.set('useFindAndModify', false);
 mongoose.set('useCreateIndex', true);
 mongoose.set('useUnifiedTopology', true);
-mongoose.connect("mongodb://localhost/yelpcamp");
+mongoose.connect("mongodb://localhost/yelpcamp-test");
 app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static(`${__dirname}/public`));
 app.use(methodOverride("_method"));
+app.use(flash());
+app.locals.moment = require("moment");
+app.locals.adminCode = "secret123";
 
 //data_populate();
 
@@ -38,6 +42,8 @@ passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 app.use((req, res, next) => {
     res.locals.currentUser = req.user;
+    res.locals.error = req.flash("error");
+    res.locals.success = req.flash("success");
     next();
 });
 
