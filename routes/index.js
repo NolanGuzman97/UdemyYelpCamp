@@ -8,10 +8,14 @@ router.get('/', (req,res) =>{
 });
 
 router.get("/register", (req, res) => {
-    res.render("register");
+    res.render("register", {page: 'register'});
 });
 
 router.post("/register", (req, res) => {
+    
+    if(req.body.adminCode === adminCode){
+        req.body.isAdmin = true;
+    }
     User.register(new User({username: req.body.username}), req.body.password, (err, user) => {
         if(err){
             console.log(err);
@@ -26,7 +30,7 @@ router.post("/register", (req, res) => {
 });
 
 router.get("/login", (req, res) =>{
-    res.render("login");
+    res.render("login", {page: 'login'});
 });
 
 router.post("/login", passport.authenticate("local", {

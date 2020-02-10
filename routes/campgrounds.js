@@ -9,13 +9,14 @@ router.get('/', (req, res) => {
             console.log(err);
         }
         else{
-            res.render("campgrounds/index", {campgrounds: campgrounds});  
+            res.render("campgrounds/index", {campgrounds: campgrounds, page:'campgrounds'});  
         }
     })
 });
 
 router.post('/', middleware.isLoggedIn, (req, res) => {
     let name = req.body.name,
+        price = req.body.price,
         image = req.body.image,
         description = req.body.description,
         author = {
@@ -23,7 +24,7 @@ router.post('/', middleware.isLoggedIn, (req, res) => {
             username: req.user.username
         };
     
-    let newCampground = {name: name, image:image, description:description, author: author};
+    let newCampground = {name: name, price:price, image:image, description:description, author: author};
     Campground.create(newCampground, (err, newEntry) => {
         if(err){
             console.log(err);
