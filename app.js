@@ -19,8 +19,7 @@ mongoose.set('useNewUrlParser', true);
 mongoose.set('useFindAndModify', false);
 mongoose.set('useCreateIndex', true);
 mongoose.set('useUnifiedTopology', true);
-console.log(process.env.DB_PASS)
-mongoose.connect(`mongodb+srv://dev:${process.env.DB_PASS}@cluster0-amkqv.mongodb.net/test?retryWrites=true&w=majority`)
+mongoose.connect(process.env.DB_URL)
 .then(() => {
     console.log("Database Connection Successful")
 }).catch(err => {
@@ -33,12 +32,12 @@ app.use(express.static(`${__dirname}/public`));
 app.use(methodOverride("_method"));
 app.use(flash());
 app.locals.moment = require("moment");
-app.locals.adminCode = "secret123";
+app.locals.adminCode = process.env.ADMIN_CODE;
 
 //data_populate();
 
 app.use(require("express-session")({
-    secret: "ThisIsASecret",
+    secret: process.env.EXPRESS_SECRET,
     resave: false,
     saveUninitialized: false
 }));
