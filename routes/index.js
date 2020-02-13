@@ -12,11 +12,10 @@ router.get("/register", (req, res) => {
 });
 
 router.post("/register", (req, res) => {
-    
-    if(req.body.adminCode === adminCode){
+    if(req.body.adminCode === req.app.locals.adminCode){
         req.body.isAdmin = true;
     }
-    User.register(new User({username: req.body.username}), req.body.password, (err, user) => {
+    User.register(new User({username: req.body.username, isAdmin: req.body.isAdmin}), req.body.password, (err, user) => {
         if(err){
             console.log(err);
             req.flash("error", err.message);

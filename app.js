@@ -13,24 +13,31 @@ let express = require('express'),
     campgroundRoutes = require("./routes/campgrounds"),
     authRoutes = require("./routes/index"),
     flash = require("connect-flash");
+require('dotenv').config();
 
 mongoose.set('useNewUrlParser', true);
 mongoose.set('useFindAndModify', false);
 mongoose.set('useCreateIndex', true);
 mongoose.set('useUnifiedTopology', true);
-mongoose.connect("mongodb://localhost/yelpcamp-test");
+mongoose.connect(process.env.DB_URL)
+.then(() => {
+    console.log("Database Connection Successful")
+}).catch(err => {
+   console.log('Error: ', err.message);
+});
+
 app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static(`${__dirname}/public`));
 app.use(methodOverride("_method"));
 app.use(flash());
 app.locals.moment = require("moment");
-app.locals.adminCode = "secret123";
+app.locals.adminCode = process.env.ADMIN_CODE;
 
 //data_populate();
 
 app.use(require("express-session")({
-    secret: "ThisIsASecret",
+    secret: process.env.EXPRESS_SECRET,
     resave: false,
     saveUninitialized: false
 }));
