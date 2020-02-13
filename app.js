@@ -13,12 +13,20 @@ let express = require('express'),
     campgroundRoutes = require("./routes/campgrounds"),
     authRoutes = require("./routes/index"),
     flash = require("connect-flash");
+require('dotenv').config();
 
 mongoose.set('useNewUrlParser', true);
 mongoose.set('useFindAndModify', false);
 mongoose.set('useCreateIndex', true);
 mongoose.set('useUnifiedTopology', true);
-mongoose.connect("mongodb://localhost/yelpcamp-test");
+console.log(process.env.DB_PASS)
+mongoose.connect(`mongodb+srv://dev:${process.env.DB_PASS}@cluster0-amkqv.mongodb.net/test?retryWrites=true&w=majority`)
+.then(() => {
+    console.log("Database Connection Successful")
+}).catch(err => {
+   console.log('Error: ', err.message);
+});
+
 app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static(`${__dirname}/public`));
