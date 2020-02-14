@@ -58,4 +58,4 @@ app.use(authRoutes);
 app.use("/campgrounds", campgroundRoutes);
 app.use("/campgrounds/:id/comments", commentRoutes);
 
-app.listen(8081);
+app.listen(process.env.PORT || 5000);
